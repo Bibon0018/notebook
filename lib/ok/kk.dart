@@ -59,6 +59,9 @@ class NoteModel extends HiveObject {
   int get hashCode => title.hashCode ^ text.hashCode;
 }
 
+//TODO старайся выносить виджеты,
+// если это какие-то отдельные компоненты в отдельные файлы
+// этим ты повысишь читаемость кода за счет уменьшения кол-ва строк в одном файле
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -77,6 +80,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    //кстати прикольное решение
     return ValueListenableBuilder(
       valueListenable: Hive.box('ok').listenable(),
       builder: (BuildContext context, Box box, Widget? child) {
@@ -95,6 +99,7 @@ class _HomeState extends State<Home> {
           ),
           body: ListView.builder(
               itemCount: box.length,
+              //можно вынести отдельный метод
               itemBuilder: (BuildContext context, var index) {
                 final note = box.getAt(index);
                 //get('notes')).elementAt(index);
@@ -118,6 +123,7 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                     ),
+                    //для лучшей читаемости - в отдельный метод
                     onTap: () async {
                       final text = await Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
@@ -179,6 +185,7 @@ class _HomeState extends State<Home> {
   }
 }
 
+//выноси в отдельные виджеты
 class FirstScreen extends StatefulWidget {
   final String? initialValue;
   const FirstScreen({Key? key, this.initialValue}) : super(key: key);
@@ -198,6 +205,8 @@ class _FirstScreenState extends State<FirstScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //TODO тебе в большинстве случаев Scaffold не нужен, тут можно было обойтись контейнером
+    // Scaffold чаще всего используют в страницах которые главные, например главая Вконтакте с кучей менюшек
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
